@@ -8,18 +8,18 @@ metadata:
 spec:
   project: default
   source:
-    repoURL: https://github.com/sanveld/gitops.git
-    targetRevision: HEAD
-    path: applications/prometheus
+    # Use the Helm chart repository directly
+    repoURL: https://prometheus-community.github.io/helm-charts
+    targetRevision: 15.18.0  # Specify the chart version
+    chart: prometheus
+    # Your custom values from Git
     helm:
       valueFiles:
         - values.yaml
-      # If you're using a Helm chart from a repository rather than your own Helm charts
-      # Uncomment and modify the following:
-      # releaseName: prometheus
-      # chart: prometheus
-      # repo: https://prometheus-community.github.io/helm-charts
-      # version: 15.18.0  # Specify the chart version
+      # Reference to where your values.yaml is stored
+      fileParameters:
+        - name: values.yaml
+          path: apps/prometheus/values.yaml
   destination:
     server: https://kubernetes.default.svc
     namespace: monitoring
