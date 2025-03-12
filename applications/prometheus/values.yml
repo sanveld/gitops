@@ -1,0 +1,82 @@
+# Prometheus Helm values with LoadBalancer service configuration
+# Basic configuration for testing/development in Minikube
+
+server:
+  persistentVolume:
+    enabled: true
+    size: 8Gi
+  
+  # Service configuration with LoadBalancer
+  service:
+    type: LoadBalancer
+    port: 9090
+    targetPort: 9090
+    nodePort: 30909  # Optional: Specify a node port
+    annotations: {}
+  
+  # Basic resources for Minikube
+  resources:
+    limits:
+      cpu: 500m
+      memory: 512Mi
+    requests:
+      cpu: 200m
+      memory: 256Mi
+
+# AlertManager configuration
+alertmanager:
+  persistentVolume:
+    enabled: true
+    size: 2Gi
+  
+  # Default to ClusterIP, can change to LoadBalancer if needed
+  service:
+    type: ClusterIP
+  
+  resources:
+    limits:
+      cpu: 100m
+      memory: 128Mi
+    requests:
+      cpu: 50m
+      memory: 64Mi
+
+# Node Exporter configuration
+nodeExporter:
+  enabled: true
+  
+  resources:
+    limits:
+      cpu: 100m
+      memory: 64Mi
+    requests:
+      cpu: 50m
+      memory: 32Mi
+
+# Pushgateway configuration
+pushgateway:
+  enabled: true
+  
+  resources:
+    limits:
+      cpu: 100m
+      memory: 64Mi
+    requests:
+      cpu: 50m
+      memory: 32Mi
+
+# kube-state-metrics configuration
+kubeStateMetrics:
+  enabled: true
+
+# Configure default scrape configs
+serverFiles:
+  prometheus.yml:
+    scrape_configs:
+      - job_name: prometheus
+        static_configs:
+          - targets:
+            - localhost:9090
+
+# Set default retention period
+retention: "7d"
