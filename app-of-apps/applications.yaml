@@ -7,13 +7,10 @@ metadata:
     - resources-finalizer.argocd.argoproj.io
 spec:
   project: default
-  sources:
-    - repoURL: https://prometheus-community.github.io/helm-charts
-      targetRevision: 15.18.0
-      chart: prometheus
-      helm:
-        values: |
-          {{- tpl (readFile "https://github.com/sanveld/gitops/raw/refs/heads/main/applications/prometheus/values.yml") . }}
+  source:
+    repoURL: https://github.com/sanveld/gitops.git
+    targetRevision: HEAD
+    path: applications/prometheus
   destination:
     server: https://kubernetes.default.svc
     namespace: monitoring
