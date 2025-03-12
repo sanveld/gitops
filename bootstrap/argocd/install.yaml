@@ -1,0 +1,48 @@
+apiVersion: v1
+kind: Secret
+metadata:
+  name: argocd-secret
+  namespace: argocd
+  labels:
+    app.kubernetes.io/part-of: argocd
+type: Opaque
+data:
+  # admin:YourPasswordHere (Change YourPasswordHere to your desired password and generate with htpasswd/bcrypt)
+  # Example: admin:$2a$10$2DlX4LR1pFpdOhkn1LKPAeFHpPTXE7hJI0skL1.hS6pZ1vVRyPROK
+  admin.password: JDJhJDEwJDJEbFg0TFIxcEZwZE9oa24xTEtQQWVGSHBQVFhFN2hKSTBza0wxLmhTNnBaMXZWUnlQUk9L
+  admin.passwordMtime: MjAyNS0wMy0xMlQwMDowMDowMFo=
+
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: argocd-cm
+  namespace: argocd
+  labels:
+    app.kubernetes.io/name: argocd-cm
+    app.kubernetes.io/part-of: argocd
+data:
+  # Add any custom configurations here
+  url: https://argocd.your-domain.com  # Replace with your domain
+  admin.enabled: "true"
+---
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: argocd-application-controller
+  namespace: argocd
+  labels:
+    app.kubernetes.io/component: application-controller
+    app.kubernetes.io/name: argocd-application-controller
+    app.kubernetes.io/part-of: argocd
+---
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: argocd-server
+  namespace: argocd
+  labels:
+    app.kubernetes.io/component: server
+    app.kubernetes.io/name: argocd-server
+    app.kubernetes.io/part-of: argocd
+
