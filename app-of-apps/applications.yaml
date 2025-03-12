@@ -1,0 +1,53 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: prometheus
+  namespace: argocd
+  finalizers:
+    - resources-finalizer.argocd.argoproj.io
+spec:
+  project: default
+  source:
+    repoURL: https://github.com/sanveld/gitops.git
+    targetRevision: HEAD
+    path: applications/prometheus
+    helm:
+      valueFiles:
+        - values.yaml
+      # If you're using a Helm chart from a repository rather than your own Helm charts
+      # Uncomment and modify the following:
+      # releaseName: prometheus
+      # chart: prometheus
+      # repo: https://prometheus-community.github.io/helm-charts
+      # version: 15.18.0  # Specify the chart version
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: monitoring
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
+    syncOptions:
+      - CreateNamespace=true
+---
+# Parent Application that manages all other applications
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: all-apps
+  namespace: argocd
+  finalizers:
+    - resources-finalizer.argocd.argoproj.io
+spec:
+  project: default
+  source:
+    repoURL: https://github.com/sanveld/gitops.git
+    targetRevision: HEAD
+    path: app-of-apps
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: argocd
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
