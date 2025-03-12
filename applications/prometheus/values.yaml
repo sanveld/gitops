@@ -11,8 +11,6 @@ server:
     type: LoadBalancer
     port: 9090
     targetPort: 9090
-    nodePort: 30909  # Optional: Specify a node port
-    annotations: {}
   
   # Basic resources for Minikube
   resources:
