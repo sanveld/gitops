@@ -7,19 +7,16 @@ metadata:
     - resources-finalizer.argocd.argoproj.io
 spec:
   project: default
-  source:
-    # Use the Helm chart repository directly
-    repoURL: https://prometheus-community.github.io/helm-charts
-    targetRevision: 15.18.0  # Specify the chart version
-    chart: prometheus
-    # Your custom values from Git
-    helm:
-      valueFiles:
-        - values.yaml
-      # Reference to where your values.yaml is stored
-      fileParameters:
-        - name: values.yaml
-          path: apps/prometheus/values.yaml
+  sources:
+    - repoURL: https://prometheus-community.github.io/helm-charts
+      targetRevision: 15.18.0
+      chart: prometheus
+      helm:
+        valueFiles:
+          - $values/applications/prometheus/values.yaml
+    - repoURL: https://github.com/sanveld/gitops.git
+      targetRevision: HEAD
+      ref: values
   destination:
     server: https://kubernetes.default.svc
     namespace: monitoring
