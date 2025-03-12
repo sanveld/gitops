@@ -1,3 +1,25 @@
+# Parent Application that manages all other applications
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: all-apps
+  namespace: argocd
+  finalizers:
+    - resources-finalizer.argocd.argoproj.io
+spec:
+  project: default
+  source:
+    repoURL: https://github.com/sanveld/gitops.git
+    targetRevision: HEAD
+    path: app-of-apps
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: argocd
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
+---
 apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
@@ -21,11 +43,10 @@ spec:
     syncOptions:
       - CreateNamespace=true
 ---
-# Parent Application that manages all other applications
 apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
-  name: all-apps
+  name: grafana
   namespace: argocd
   finalizers:
     - resources-finalizer.argocd.argoproj.io
@@ -34,11 +55,13 @@ spec:
   source:
     repoURL: https://github.com/sanveld/gitops.git
     targetRevision: HEAD
-    path: app-of-apps
+    path: applications/grafana
   destination:
     server: https://kubernetes.default.svc
-    namespace: argocd
-  syncPolicy:
+    namespace: monitoring
+  syncPolicy: 
     automated:
       prune: true
       selfHeal: true
+    syncOptions:
+      - CreateNamespace=true
