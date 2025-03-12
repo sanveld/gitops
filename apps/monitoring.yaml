@@ -8,7 +8,7 @@ spec:
   source:
     repoURL: https://github.com/sanveld/gitops.git
     targetRevision: main
-    path: manifests/monitoring
+    path: apps/manifests/monitoring
   destination:
     server: https://kubernetes.default.svc
     namespace: monitoring

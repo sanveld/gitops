@@ -5,7 +5,6 @@ namespace: argocd
 
 resources:
   - argocd-namespace.yaml
-  - argocd-admin-auth.yaml
   - https://raw.githubusercontent.com/argoproj/argo-cd/stable/manifests/install.yaml
   - root-application.yaml
 
@@ -14,6 +13,14 @@ patches:
     target:
       kind: Service
       name: argocd-server
+  - path: argocd-cm-patch.yaml
+    target:
+      kind: ConfigMap
+      name: argocd-cm
+  - path: argocd-secret-patch.yaml
+    target:
+      kind: Secret
+      name: argocd-secret
 
 commonLabels:
   app.kubernetes.io/part-of: argocd

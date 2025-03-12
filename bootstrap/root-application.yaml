@@ -8,7 +8,7 @@ spec:
   source:
     repoURL: https://github.com/sanveld/gitops.git
     targetRevision: main
-    path: apps
+    path: apps/manifests/monitoring-stack
   destination:
     server: https://kubernetes.default.svc
     namespace: argocd
