@@ -10,9 +10,9 @@ grafana:
 
   service:
     type: LoadBalancer
-    port: 80
+    port: 90
     targetPort: 3000
-    
+
   datasources:
     datasources.yaml:
       apiVersion: 1
