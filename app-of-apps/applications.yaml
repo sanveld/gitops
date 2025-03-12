@@ -12,11 +12,8 @@ spec:
       targetRevision: 15.18.0
       chart: prometheus
       helm:
-        valueFiles:
-          - $values/applications/prometheus/values.yaml
-    - repoURL: https://github.com/sanveld/gitops.git
-      targetRevision: HEAD
-      ref: values
+        values: |
+          {{- tpl (readFile "https://github.com/sanveld/gitops/raw/refs/heads/main/applications/prometheus/values.yml") . }}
   destination:
     server: https://kubernetes.default.svc
     namespace: monitoring
