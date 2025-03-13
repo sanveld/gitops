@@ -1,0 +1,10 @@
+configs:
+  secret:
+    argocdServerAdminPassword: "$2a$10$zZTwfZzadL/lYSYc2XKOPOcUZ7wB.OuAqiQrIRz/GXmYAgKAEp36e"
+## Argo expects the password in the secret to be bcrypt hashed. You can create this hash with
+## `htpasswd -nbBC 10 "" adminPass | tr -d ':\n' | sed 's/$2y/$2a/'`
+
+server:
+  service:
+    type: LoadBalancer
+## For use with minikube tunnel

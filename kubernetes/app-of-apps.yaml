@@ -1,0 +1,19 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: app-of-apps
+spec:
+  destination:
+    name: in-cluster
+    namespace: argocd
+  source:
+    repoURL: https://github.com/sanveld/gitops
+    path: kubernetes
+    targetRevision: HEAD
+  project: default
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
+    syncOptions:
+      - CreateNamespace=true

@@ -1,0 +1,22 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: crossplane
+spec:
+  project: default
+  source:
+    repoURL: https://charts.crossplane.io/stable
+    targetRevision: "1.19.0"
+    chart: crossplane
+    helm:
+      valueFiles:
+        - values-minikube.yaml
+  destination:
+    name: in-cluster
+    namespace: crossplane-system
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
+    syncOptions:
+      - CreateNamespace=true
