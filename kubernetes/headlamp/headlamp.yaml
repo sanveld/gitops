@@ -10,12 +10,11 @@ spec:
   source:
     repoURL: https://headlamp-k8s.github.io/headlamp/
     chart: headlamp
-    targetRevision: 0.29.0
+    targetRevision: 0.29.1
     helm:
       values: |
-        server:
-          service:
-            type: LoadBalancer
+        service:
+          type: LoadBalancer
   destination:
     name: in-cluster
     namespace: headlamp
