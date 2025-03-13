@@ -1,0 +1,26 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: headlamp
+  namespace: argocd
+  finalizers:
+    - resources-finalizer.argocd.argoproj.io
+spec:
+  project: default
+  source:
+    repoURL: https://headlamp-k8s.github.io/headlamp/
+    chart: headlamp
+    targetRevision: 0.29.0
+    helm:
+      values: |
+        server:
+          service:
+            type: LoadBalancer
+  destination:
+    name: in-cluster
+    namespace: headlamp
+  syncPolicy:
+    automated: {}
+    syncOptions:
+      - CreateNamespace=true
+      - ServerSideApply=true
