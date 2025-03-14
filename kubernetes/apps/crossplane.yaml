@@ -10,7 +10,7 @@ spec:
     chart: crossplane
     helm:
       valueFiles:
-        - values-minikube.yaml
+        - ../values/values-minikube.yaml
   destination:
     name: in-cluster
     namespace: crossplane-system
