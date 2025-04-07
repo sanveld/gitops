@@ -34,3 +34,38 @@ podLabels:
 # Log level
 logging:
   level: info
+
+# Add custom resources to be deployed with the chart
+customResources:
+  secretStores:
+    - apiVersion: external-secrets.io/v1beta1
+      kind: SecretStore
+      metadata:
+        name: azure-keyvault-secretstore
+        namespace: external-secrets
+      spec:
+        provider:
+          azurekv:
+            authType: WorkloadIdentity
+            vaultUrl: "https://devplatform-kv-fb11afr.vault.azure.net/" 
+            serviceAccountRef:
+              name: external-secrets
+
+  externalSecrets:
+    - apiVersion: external-secrets.io/v1beta1
+      kind: ExternalSecret
+      metadata:
+        name: cloudflare-api-token
+        namespace: external-secrets
+      spec:
+        refreshInterval: "1h"
+        secretStoreRef:
+          name: azure-keyvault-secretstore
+          kind: SecretStore
+        target:
+          name: cloudflare-api-token
+          creationPolicy: Owner
+        data:
+        - secretKey: api-token
+          remoteRef:
+            key: cloudflare-api-token
