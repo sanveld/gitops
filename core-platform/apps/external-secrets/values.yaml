@@ -1,0 +1,36 @@
+replicaCount: 1
+
+# Enable Azure Key Vault provider
+provider:
+  azurekv:
+    enabled: true
+
+# Service account for ESO
+serviceAccount:
+  create: true
+  name: "external-secrets"
+  annotations:
+    azure.workload.identity/client-id: "ad5768e3-3e19-48be-aaec-05391395f77d" # Replace with your User Assigned Managed Identity client ID in production
+
+extraVolumeMounts:
+  - name: azure-identity-token
+    mountPath: /var/run/secrets/azure/tokens
+    readOnly: true
+
+extraVolumes:
+  - name: azure-identity-token
+    projected:
+      defaultMode: 420
+      sources:
+      - serviceAccountToken:
+          path: azure-identity-token
+          expirationSeconds: 86400
+          audience: api://AzureADTokenExchange
+
+# Set pod identity config for azure auth
+podLabels:
+  azure.workload.identity/use: "true"
+
+# Log level
+logging:
+  level: info
