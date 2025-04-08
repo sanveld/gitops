@@ -13,7 +13,7 @@ spec:
       targetRevision: 35.0.0
 
     - repoURL: https://github.com/sanveld/gitops.git
-      targetRevision: "main"
+      targetRevision: main
       path: config/traefik
 
   destination:
