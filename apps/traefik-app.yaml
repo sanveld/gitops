@@ -11,15 +11,24 @@ spec:
     - repoURL: https://helm.traefik.io/traefik
       chart: traefik
       targetRevision: 35.0.0
-    - repoURL: https://github.com/sanveld/gitops.git
-      path: config/traefik
-      targetRevision: main
   destination:
     server: https://kubernetes.default.svc
     namespace: argocd
   helm:
-    valueFiles:
-      - values.yaml
+    values: |
+      installCRDS: true
+      service:
+        type: LoadBalancer
+      providers:
+        kubernetesCRD:
+          enabled: true
+      resources:
+        requests:
+          cpu: "100m"
+          memory: "50Mi"
+        limits:
+          cpu: "300m"
+          memory: "150Mi"
   syncPolicy:
     automated:
       prune: true
