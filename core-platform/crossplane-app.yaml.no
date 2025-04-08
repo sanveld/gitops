@@ -11,13 +11,13 @@ spec:
     chart: crossplane
     helm:
       valueFiles:
-        - ../apps/crossplane/values.yaml
+        - apps/crossplane/values.yaml
   destination:
     server: https://kubernetes.default.svc
     namespace: crossplane-system
-  # syncPolicy:
-  #   automated:
-  #     prune: true
-  #     selfHeal: true
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
     syncOptions:
       - CreateNamespace=true

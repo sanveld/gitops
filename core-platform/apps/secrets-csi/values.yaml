@@ -1,0 +1,53 @@
+## Values for Azure Key Vault Provider for Secrets Store CSI Driver
+
+linux:
+  enabled: true
+  nodeSelector: {}
+  tolerations: []
+
+## If using managed identity for authentication
+azureKeyvaultSecretsProvider:
+  enabled: true
+  secrets-store-csi-driver:
+    install: true
+  # Use the AKS cluster identity if using managed identity
+  useAksIdentity: true
+  tenantId: "${tenantId}" # Will be populated from AKS-created identity
+
+image:
+  repository: mcr.microsoft.com/oss/azure/secrets-store/provider-azure
+  tag: 1.4.1
+
+resources:
+  requests:
+    cpu: 50m
+    memory: 100Mi
+  limits:
+    cpu: 100m
+    memory: 200Mi
+
+## Configure log level for the secrets-store-csi-driver
+logLevel:
+  debug: false
+  
+rbac:
+  install: true
+  
+## Enable pod identity
+podIdentity:
+  enabled: false
+
+## Enable Rotation
+rotation:
+  enabled: true
+
+## Enable Auto Rotation if needed
+autoRotation:
+  enabled: true
+
+## For securing the keys
+securityContext:
+  runAsNonRoot: true
+  runAsUser: 65532
+  runAsGroup: 65532
+  fsGroup: 65532
