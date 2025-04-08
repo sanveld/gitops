@@ -1,5 +1,10 @@
 provider: cloudflare
 
+# Explicit Cloudflare configuration
+cloudflare:
+  apiToken: ${CF_API_TOKEN}
+  proxied: false
+
 # Using CSI driver to mount the API token from secrets-store-csi driver
 extraVolumeMounts:
   - name: cloudflare-api-token
