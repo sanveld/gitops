@@ -1,0 +1,33 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: traefik
+  namespace: argocd
+  finalizers:
+    - resources-finalizer.argocd.argoproj.io
+spec:
+  project: default
+  sources:
+    - repoURL: https://helm.traefik.io/traefik
+      chart: traefik
+      targetRevision: 34.5.0
+
+    - repoURL: https://github.com/sanveld/gitops.git
+      targetRevision: "main"
+      path: config/traefik
+
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: traefik
+  helm:
+    valueFiles:
+      - values.yaml
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
+    syncOptions:
+      - CreateNamespace=true
+  info:
+    - name: Description
+      value: "Traefik Ingress Controller with External DNS and Cert Manager integration"

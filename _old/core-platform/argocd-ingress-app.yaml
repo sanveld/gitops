@@ -1,25 +1,22 @@
 apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
-  name: external-dns
+  name: argocd-ingress
   namespace: argocd
   finalizers:
     - resources-finalizer.argocd.argoproj.io
 spec:
   project: default
   source:
-    repoURL: https://github.com/kubernetes-sigs/external-dns
-    targetRevision: 0.16.1
-    path: charts/external-dns
-    helm:
-      valueFiles:
-        - ../../../apps/external-dns/values.yaml
+    repoURL: https://github.com/sanveld/gitops.git
+    path: core-platform/apps/argocd
+    targetRevision: HEAD
   destination:
     server: https://kubernetes.default.svc
-    namespace: external-dns
+    namespace: argocd
   syncPolicy:
     automated:
       prune: true
       selfHeal: true
     syncOptions:
-      - CreateNamespace=true
+    - CreateNamespace=false  # Since argocd namespace already exists
