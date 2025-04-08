@@ -1,8 +1,11 @@
+# Simple Traefik configuration for testing
+# No cert-manager or external-dns integration
+
+# Enable CRD installation
+installCRDs: true
+
 deployment:
   kind: Deployment
-
-# Enable CRD installation - this will install all required CRDs
-installCRDs: true
 
 # Enable Kubernetes Ingress provider
 providers:
@@ -12,27 +15,10 @@ providers:
     publishedService:
       enabled: true
 
-# Enable cert-manager integration
-additionalArguments:
-  - "--certificatesresolvers.default.acme.email=your-email@example.com"
-  - "--certificatesresolvers.default.acme.storage=/data/acme.json"
-  - "--certificatesresolvers.default.acme.tlschallenge=true"
-  - "--providers.kubernetesingress.ingressclass=traefik"
-
-# Create persistent volume for acme.json
-persistence:
-  enabled: true
-  accessMode: ReadWriteOnce
-  size: 128Mi
-  path: /data
-
-# Service configuration for LoadBalancer
+# Basic service configuration
 service:
   enabled: true
   type: LoadBalancer
-  annotations:
-    # External DNS integration
-    external-dns.alpha.kubernetes.io/hostname: "traefik.everythingascode.dev"
 
 # Dashboard and API
 ingressRoute:
