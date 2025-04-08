@@ -8,27 +8,14 @@ cloudflare:
 domainFilters:
   - everythingascode.dev
 
-# Using CSI driver to mount the API token from secrets-store-csi driver
-extraVolumeMounts:
-  - name: cloudflare-api-token
-    mountPath: "/mnt/secrets-store"
-    readOnly: true
-
-extraVolumes:
-  - name: cloudflare-api-token
-    csi:
-      driver: secrets-store.csi.k8s.io
-      readOnly: true
-      volumeAttributes:
-        secretProviderClass: "external-dns-cloudflare"
-
-# Use environment variable with mounted secret
-env:
+extraEnvVars:
   - name: CF_API_TOKEN
     valueFrom:
       secretKeyRef:
-        name: cloudflare-api-token
-        key: api-token
+        # Must match spec.secretObjects.secretName in SecretProviderClass
+        name: external-dns-cloudflare-secret
+        # Must match spec.secretObjects.data.key in SecretProviderClass
+        key: CF_API_TOKEN
 
 txtOwnerId: "aks-cluster"
 policy: sync
