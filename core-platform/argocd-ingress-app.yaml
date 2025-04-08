@@ -8,7 +8,7 @@ metadata:
 spec:
   project: default
   source:
-    repoURL: https://kubernetes.default.svc  # Using local repository reference
+    repoURL: https://github.com/sanveld/gitops.git
     path: gitops/core-platform/apps/argocd
     targetRevision: HEAD
   destination:
