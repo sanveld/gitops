@@ -3,10 +3,12 @@ kind: Application
 metadata:
   name: argocd-ingress
   namespace: argocd
+  finalizers:
+    - resources-finalizer.argocd.argoproj.io
 spec:
   project: default
   source:
-    repoURL: https://github.com/yourusername/devplatform.git  # Replace with your actual Git repo URL
+    repoURL: https://kubernetes.default.svc  # Using local repository reference
     path: gitops/core-platform/apps/argocd
     targetRevision: HEAD
   destination:

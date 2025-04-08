@@ -13,7 +13,7 @@ spec:
     path: charts/external-dns
     helm:
       valueFiles:
-        - apps/external-dns/values.yaml
+        - ../apps/external-dns/values.yaml
   destination:
     server: https://kubernetes.default.svc
     namespace: external-dns
