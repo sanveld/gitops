@@ -1,0 +1,63 @@
+provider: cloudflare
+
+# Using CSI driver to mount the API token from secrets-store-csi driver
+extraVolumeMounts:
+  - name: cloudflare-api-token
+    mountPath: "/mnt/secrets-store"
+    readOnly: true
+
+extraVolumes:
+  - name: cloudflare-api-token
+    csi:
+      driver: secrets-store.csi.k8s.io
+      readOnly: true
+      volumeAttributes:
+        secretProviderClass: "external-dns-cloudflare"
+
+# Use environment variable with mounted secret
+env:
+  - name: CF_API_TOKEN
+    valueFrom:
+      secretKeyRef:
+        name: cloudflare-api-token
+        key: api-token
+
+# Specify domain filter to limit to your domain
+domainFilters:
+  - everythingascode.dev  # Replace with your actual domain
+
+txtOwnerId: "aks-cluster"  # Unique identifier for this External-DNS instance
+
+policy: sync  # sync, upsert-only, or create-only
+registry: txt  # Use TXT records to track ownership
+
+interval: "1m"
+
+sources:
+  - service
+  - ingress
+
+txtPrefix: "external-dns-"
+
+rbac:
+  create: true
+
+serviceAccount:
+  create: true
+  name: external-dns
+
+podSecurityContext:
+  fsGroup: 65534
+
+securityContext:
+  readOnlyRootFilesystem: true
+  runAsNonRoot: true
+  runAsUser: 65534
+
+resources:
+  limits:
+    cpu: 100m
+    memory: 128Mi
+  requests:
+    cpu: 50m
+    memory: 64Mi
