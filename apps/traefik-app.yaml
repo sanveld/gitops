@@ -7,10 +7,17 @@ metadata:
     - resources-finalizer.argocd.argoproj.io
 spec:
   project: default
-  source:
+  sources:
     - repoURL: https://helm.traefik.io/traefik
       chart: traefik
       targetRevision: 35.0.0
+      helm:
+        valueFiles:
+          - $values/values.yaml
+    - repoURL: https://github.com/sanveld/gitops.git
+      path: config/traefik
+      targetRevision: HEAD
+      ref: values
   destination:
     server: https://kubernetes.default.svc
     namespace: traefik
