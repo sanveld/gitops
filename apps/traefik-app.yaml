@@ -11,14 +11,12 @@ spec:
     - repoURL: https://helm.traefik.io/traefik
       chart: traefik
       targetRevision: 35.0.0
-
     - repoURL: https://github.com/sanveld/gitops.git
-      targetRevision: main
       path: config/traefik
-
+      targetRevision: "main"
   destination:
     server: https://kubernetes.default.svc
-    namespace: traefik
+    namespace: argocd
   helm:
     valueFiles:
       - values.yaml

@@ -1,3 +1,4 @@
+installCRDS: true
 service:
   type: LoadBalancer
 
