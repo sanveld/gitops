@@ -11,17 +11,18 @@ spec:
     - repoURL: https://kubernetes-sigs.github.io/external-dns/
       chart: external-dns
       targetRevision: 1.14.1
+      helm:
+        values: |
+          provider: cloudflare
+          cloudflare:
+            apiToken: ${CF_API_TOKEN}
+            secretName: cloudflare-api-token
     - repoURL: https://github.com/sanveld/gitops.git
       path: config/external-dns
       targetRevision: "main"
   destination:
     server: https://kubernetes.default.svc
     namespace: external-dns
-  helm:
-    valueFiles:
-      - values.yaml
-    values: |
-      provider: cloudflare
   syncPolicy:
     automated:
       prune: true
