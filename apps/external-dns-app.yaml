@@ -20,6 +20,8 @@ spec:
   helm:
     valueFiles:
       - values.yaml
+    values: |
+      provider: cloudflare
   syncPolicy:
     automated:
       prune: true

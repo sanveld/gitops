@@ -1,9 +1,12 @@
 provider: cloudflare
 
-# Explicit Cloudflare configuration
 cloudflare:
   apiToken: ${CF_API_TOKEN}
-  proxied: false
+  secretName: cloudflare-api-token
+
+# Specify domain filter to limit to your domain
+domainFilters:
+  - everythingascode.dev
 
 # Using CSI driver to mount the API token from secrets-store-csi driver
 extraVolumeMounts:
@@ -27,17 +30,10 @@ env:
         name: cloudflare-api-token
         key: api-token
 
-# Specify domain filter to limit to your domain
-domainFilters:
-  - everythingascode.dev  # Replace with your actual domain
-
-txtOwnerId: "aks-cluster"  # Unique identifier for this External-DNS instance
-
-policy: sync  # sync, upsert-only, or create-only
-registry: txt  # Use TXT records to track ownership
-
+txtOwnerId: "aks-cluster"
+policy: sync
+registry: txt
 interval: "1m"
-
 sources:
   - service
   - ingress
