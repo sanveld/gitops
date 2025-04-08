@@ -13,7 +13,7 @@ spec:
       targetRevision: 35.0.0
     - repoURL: https://github.com/sanveld/gitops.git
       path: config/traefik
-      targetRevision: "main"
+      targetRevision: main
   destination:
     server: https://kubernetes.default.svc
     namespace: argocd
