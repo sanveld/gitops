@@ -1,6 +1,9 @@
 deployment:
   kind: Deployment
 
+# Enable CRD installation - this will install all required CRDs
+installCRDs: true
+
 # Enable Kubernetes Ingress provider
 providers:
   kubernetesIngress:
