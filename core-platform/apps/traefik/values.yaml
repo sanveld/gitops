@@ -29,7 +29,7 @@ service:
   type: LoadBalancer
   annotations:
     # External DNS integration
-    external-dns.alpha.kubernetes.io/hostname: "platform.everythingascode.dev"
+    external-dns.alpha.kubernetes.io/hostname: "traefik.everythingascode.dev"
 
 # Dashboard and API
 ingressRoute:

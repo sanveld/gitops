@@ -1,7 +1,12 @@
 provider: cloudflare
 cloudflare:
-  apiToken: ""  # Add your Cloudflare API token in a sealed secret
+  # Using CSI driver to fetch API token from Azure Key Vault
+  apiToken: "${api-token}"  # This will reference the mounted secret
   proxied: false  # Set to true if you want Cloudflare to proxy the traffic
+  keyVault:
+    # Use the name from Terraform output: $(terraform -chdir=../../terraform/00-static-resources output -raw key_vault_name)
+    name: "kv-devplatform-d815qx2"  # This should match your static Key Vault name
+    tenantId: "${tenantId}"      # Will be populated from AKS identity
 
 domainFilters:
   - everythingascode.dev
@@ -18,6 +23,30 @@ sources:
   - ingress
 
 txtPrefix: "external-dns-"
+
+# Configure volume mounts for CSI driver
+extraVolumeMounts:
+  - name: secrets-store-inline
+    mountPath: "/mnt/secrets-store"
+    readOnly: true
+
+extraVolumes:
+  - name: secrets-store-inline
+    csi:
+      driver: secrets-store.csi.k8s.io
+      readOnly: true
+      volumeAttributes:
+        secretProviderClass: external-dns-cloudflare
+      nodePublishSecretRef:
+        name: cloudflare-api-token
+
+# Use environment variable with mounted secret
+env:
+  - name: CF_API_TOKEN
+    valueFrom:
+      secretKeyRef:
+        name: cloudflare-api-token
+        key: api-token
 
 rbac:
   create: true

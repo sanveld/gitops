@@ -1,0 +1,31 @@
+apiVersion: traefik.containo.us/v1alpha1
+kind: IngressRoute
+metadata:
+  name: traefik-dashboard
+  namespace: traefik
+annotations:
+  external-dns.alpha.kubernetes.io/hostname: "traefik.everythingascode.dev"
+spec:
+  entryPoints:
+    - websecure
+  routes:
+    - match: Host(`traefik.everythingascode.dev`)
+      kind: Rule
+      middlewares:
+        - name: traefik-auth
+          namespace: traefik
+      services:
+        - name: api@internal
+          kind: TraefikService
+  tls:
+    certResolver: default
+
+---
+apiVersion: traefik.containo.us/v1alpha1
+kind: Middleware
+metadata:
+  name: traefik-auth
+  namespace: traefik
+spec:
+  basicAuth:
+    secret: traefik-auth  # Create this secret with htpasswd credentials
