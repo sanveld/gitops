@@ -10,7 +10,7 @@ spec:
   sources:
     - repoURL: https://helm.traefik.io/traefik
       chart: traefik
-      targetRevision: 34.5.0
+      targetRevision: 35.0.0
 
     - repoURL: https://github.com/sanveld/gitops.git
       targetRevision: "main"
