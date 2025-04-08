@@ -1,9 +1,5 @@
-## Values for Azure Key Vault Provider for Secrets Store CSI Driver
-
 linux:
   enabled: true
-  nodeSelector: {}
-  tolerations: []
 
 ## If using managed identity for authentication
 azureKeyvaultSecretsProvider:
@@ -12,7 +8,6 @@ azureKeyvaultSecretsProvider:
     install: true
   # Use the AKS cluster identity if using managed identity
   useAksIdentity: true
-  tenantId: "${tenantId}" # Will be populated from AKS-created identity
 
 image:
   repository: mcr.microsoft.com/oss/azure/secrets-store/provider-azure
