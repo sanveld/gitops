@@ -16,7 +16,7 @@ spec:
     namespace: traefik
   helm:
     values: |
-      installCRDS: true
+      # installCRDS: true
       service:
         type: LoadBalancer
       providers:

@@ -10,7 +10,7 @@ spec:
   sources:
     - repoURL: https://charts.bitnami.com/external-dns/
       chart: external-dns
-      targetRevision: 0.16.1
+      targetRevision: 1.16.0
     - repoURL: https://github.com/sanveld/gitops.git
       path: config/external-dns
       targetRevision: "main"
