@@ -14,21 +14,6 @@ spec:
   destination:
     server: https://kubernetes.default.svc
     namespace: traefik
-  helm:
-    values: |
-      # installCRDS: true
-      service:
-        type: LoadBalancer
-      providers:
-        kubernetesCRD:
-          enabled: true
-      resources:
-        requests:
-          cpu: "100m"
-          memory: "50Mi"
-        limits:
-          cpu: "300m"
-          memory: "150Mi"
   syncPolicy:
     automated:
       prune: true
