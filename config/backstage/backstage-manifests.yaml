@@ -38,29 +38,29 @@ spec:
       targetPort: http
   type: LoadBalancer
 ---
-apiVersion: networking.k8s.io/v1
-kind: Ingress
-metadata:
-  name: backstage-ingress
-  namespace: backstage
-  annotations:
-    cert-manager.io/cluster-issuer: letsencrypt-prod
-    kubernetes.io/ingress.class: traefik
-    traefik.ingress.kubernetes.io/router.tls: "true"
-    traefik.ingress.kubernetes.io/router.tls.options: default
-spec:
-  tls:
-  - hosts:
-    - backstage.everythingascode.dev
-    secretName: backstage-tls-secret
-  rules:
-  - host: backstage.everythingascode.dev
-    http:
-      paths:
-      - path: /
-        pathType: Prefix
-        backend:
-          service:
-            name: backstage-service
-            port:
-              number: 80
+# apiVersion: networking.k8s.io/v1
+# kind: Ingress
+# metadata:
+#   name: backstage-ingress
+#   namespace: backstage
+#   annotations:
+#     cert-manager.io/cluster-issuer: letsencrypt-prod
+#     kubernetes.io/ingress.class: traefik
+#     traefik.ingress.kubernetes.io/router.tls: "true"
+#     traefik.ingress.kubernetes.io/router.tls.options: default
+# spec:
+#   tls:
+#   - hosts:
+#     - backstage.everythingascode.dev
+#     secretName: backstage-tls-secret
+#   rules:
+#   - host: backstage.everythingascode.dev
+#     http:
+#       paths:
+#       - path: /
+#         pathType: Prefix
+#         backend:
+#           service:
+#             name: backstage-service
+#             port:
+#               number: 80
