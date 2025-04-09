@@ -1,6 +1,9 @@
 provider:
   name: cloudflare
 
+source:
+  - ingress
+
 env:
   - name: CF_API_TOKEN
     valueFrom:
