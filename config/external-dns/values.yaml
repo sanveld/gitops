@@ -1,30 +1,9 @@
-provider: cloudflare
+provider:
+  name: cloudflare
 
-# Domain filter to limit to your domain
-domainFilters:
-  - everythingascode.dev
-
-# Configure environment variables for Cloudflare authentication using CSI secrets
 env:
   - name: CF_API_TOKEN
     valueFrom:
       secretKeyRef:
         name: cloudflare-api-token
         key: CF_API_TOKEN
-
-# Basic configuration
-sources:
-  - service
-  - ingress
-policy: sync
-registry: txt
-txtOwnerId: "aks-cluster"
-interval: "1m"
-
-# RBAC configuration
-rbac:
-  create: true
-
-serviceAccount:
-  create: true
-  name: external-dns
