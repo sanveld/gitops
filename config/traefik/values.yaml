@@ -10,12 +10,11 @@ providers:
 ssl:
   enabled: true
   
-# Middleware for HTTPS redirection with exception for ACME challenges
+# Simple HTTP to HTTPS redirection (no special ACME challenge handling needed for DNS01)
 additionalArguments:
-  - "--entrypoints.web.http.middlewares=acme-middleware@kubernetescrd"
-  - "--entrypoints.web.http.middlewares.acme-middleware.redirectscheme.scheme=https"
-  - "--entrypoints.web.http.middlewares.acme-middleware.redirectscheme.permanent=true"
-  - "--entrypoints.websecure.http.tls.certResolver=le"
+  - "--entrypoints.web.http.middlewares=https-redirect@kubernetescrd"
+  - "--entrypoints.web.http.middlewares.https-redirect.redirectscheme.scheme=https"
+  - "--entrypoints.web.http.middlewares.https-redirect.redirectscheme.permanent=true"
   
 ports:
   web:
