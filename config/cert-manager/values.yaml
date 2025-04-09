@@ -3,6 +3,10 @@ installCRDs: true
 cainjector:
   enabled: true
 
+startupapicheck:
+  enabled: true
+  timeout: 5m
+
 # Resource limits for cert-manager
 resources:
   requests:
