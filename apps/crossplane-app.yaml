@@ -3,6 +3,8 @@ kind: Application
 metadata:
   name: crossplane
   namespace: argocd
+  annotations:
+    argocd.argoproj.io/sync-wave: "1"
 spec:
   project: default
   sources:
@@ -18,6 +20,8 @@ spec:
     - repoURL: https://github.com/sanveld/gitops.git
       path: config/crossplane
       targetRevision: HEAD
+      directory:
+        include: "azure-management-provider.yaml"
   destination:
     server: https://kubernetes.default.svc
     namespace: crossplane-system
