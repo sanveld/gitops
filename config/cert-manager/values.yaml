@@ -7,6 +7,11 @@ startupapicheck:
   enabled: true
   timeout: 5m
 
+# Configure webhook for single-node AKS cluster
+webhook:
+  # Disable node affinity for single-node clusters
+  affinity: {}
+
 # Resource limits for cert-manager
 resources:
   requests:
