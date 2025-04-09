@@ -12,26 +12,13 @@ webhook:
   # Disable node affinity for single-node clusters
   affinity: {}
 
-extraVolumes:
-  - name: secrets-store-csi-cloudflare
-    csi:
-      driver: secrets-store.csi.k8s.io
-      readOnly: true
-      volumeAttributes:
-        secretProviderClass: "cert-manager-cloudflare"
-extraVolumeMounts:
-  - name: secrets-store-csi-cloudflare
-    mountPath: "/mnt/secrets-store/cloudflare"
-    readOnly: true
-
-# Resource limits for cert-manager
 resources:
   requests:
     cpu: "100m"
-    memory: "100Mi"
+    memory: "150Mi"
   limits:
-    cpu: "200m"
-    memory: "300Mi"
+    cpu: "500m"
+    memory: "512Mi"
 
 # Security context settings
 securityContext:
