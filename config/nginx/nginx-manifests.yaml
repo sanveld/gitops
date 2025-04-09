@@ -40,6 +40,9 @@ metadata:
   annotations:
     cert-manager.io/cluster-issuer: letsencrypt-prod
     kubernetes.io/ingress.class: traefik
+    # Add TLS configuration to fix SSL_ERROR_NO_CYPHER_OVERLAP
+    traefik.ingress.kubernetes.io/router.tls: "true"
+    traefik.ingress.kubernetes.io/router.tls.options: default
 spec:
   tls:
   - hosts:
