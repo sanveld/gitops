@@ -12,15 +12,6 @@ spec:
       chart: cert-manager
       targetRevision: v1.14.0
       helm:
-        values: |
-          installCRDs: true
-          webhook:
-            enabled: true
-          cainjector:
-            enabled: true
-          startupapicheck:
-            enabled: true
-            timeout: 5m
         valueFiles:
           - $values/config/cert-manager/values.yaml
     - repoURL: https://github.com/sanveld/gitops.git
