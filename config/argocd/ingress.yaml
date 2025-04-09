@@ -9,9 +9,8 @@ metadata:
     traefik.ingress.kubernetes.io/router.tls: "true"
     # Important annotation for external-dns to create the DNS record
     external-dns.alpha.kubernetes.io/hostname: "argocd.everythingascode.dev"
-    # If ArgoCD is configured with HTTPS, we need to handle GRPC as well
-    traefik.ingress.kubernetes.io/service.serversscheme: "https"
-    traefik.ingress.kubernetes.io/service.serverstransport: "insecure@file"
+    # Special annotations for ArgoCD's GRPC support
+    traefik.ingress.kubernetes.io/router.middlewares: "argocd-middleware@kubernetescrd"
 spec:
   rules:
   - host: argocd.everythingascode.dev
