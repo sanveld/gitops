@@ -1,0 +1,17 @@
+apiVersion: traefik.containo.us/v1alpha1
+kind: IngressRoute
+metadata:
+  name: nginx-test-route
+  namespace: nginx-test
+spec:
+  entryPoints:
+    - web
+    - websecure
+  routes:
+    - match: Host(`nginx-test.everythingascode.dev`)
+      kind: Rule
+      services:
+        - name: nginx-test
+          port: 80
+  tls:
+    secretName: nginx-test-tls

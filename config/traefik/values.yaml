@@ -16,10 +16,16 @@ additionalArguments:
   - "--entrypoints.web.http.redirections.entryPoint.scheme=https"
   - "--entrypoints.web.http.redirections.entrypoint.permanent=true"
   - "--entrypoints.websecure.http.tls.certResolver=le"
-  - "--entrypoints.web.http.middlewares=acme-middleware"
-  - "--entrypoints.websecure.address=:443"
-  - "--providers.file.directory=/config/"
-  - "--providers.file.watch=true"
+  
+ports:
+  web:
+    port: 8000
+    expose: true
+    exposedPort: 80
+  websecure:
+    port: 8443
+    expose: true
+    exposedPort: 443
 
 # Resource limits
 resources:
