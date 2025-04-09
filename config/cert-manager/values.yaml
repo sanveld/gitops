@@ -12,16 +12,6 @@ resources:
     cpu: "200m"
     memory: "300Mi"
 
-# Enable webhook for validation
-webhook:
-  enabled: true
-
-# Enable Prometheus metrics
-prometheus:
-  enabled: true
-  servicemonitor:
-    enabled: false
-
 # Security context settings
 securityContext:
   enabled: true
