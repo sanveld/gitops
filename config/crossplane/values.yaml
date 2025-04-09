@@ -2,3 +2,17 @@
 installCRDs: true
 args:
   - --enable-external-secret-stores
+  
+# Configuration for the crossplane-controller-manager deployment
+deployment:
+  extraVolumeMounts:
+    - name: azure-creds
+      mountPath: "/mnt/secrets-store"
+      readOnly: true
+  extraVolumes:
+    - name: azure-creds
+      csi:
+        driver: secrets-store.csi.k8s.io
+        readOnly: true
+        volumeAttributes:
+          secretProviderClass: crossplane-azure-creds
