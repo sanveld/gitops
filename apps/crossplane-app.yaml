@@ -17,11 +17,11 @@ spec:
     - repoURL: https://github.com/sanveld/gitops.git
       ref: values
       targetRevision: HEAD
-    - repoURL: https://github.com/sanveld/gitops.git
-      path: config/crossplane
-      targetRevision: HEAD
-      directory:
-        include: "azure-management-provider.yaml"
+    # - repoURL: https://github.com/sanveld/gitops.git
+    #   path: config/crossplane
+    #   targetRevision: HEAD
+    #   directory:
+    #     include: "azure-management-provider.yaml"
   destination:
     server: https://kubernetes.default.svc
     namespace: crossplane-system

@@ -1,0 +1,86 @@
+apiVersion: apiextensions.crossplane.io/v1
+kind: Composition
+metadata:
+  name: azurelinuxvm
+  labels:
+    provider: azure
+    service: compute
+spec:
+  writeConnectionSecretsToNamespace: crossplane-system
+  compositeTypeRef:
+    apiVersion: compute.devplatform0.com/v1alpha1
+    kind: XAzureVM
+  resources:
+    # Resource group
+    - name: resourcegroup
+      base:
+        apiVersion: azure.upbound.io/v1beta1
+        kind: ResourceGroup
+        spec:
+          forProvider:
+            location: westeurope
+    # Virtual network
+    - name: virtualnetwork
+      base:
+        apiVersion: network.azure.upbound.io/v1beta2
+        kind: VirtualNetwork
+        spec:
+          forProvider:
+            location: westeurope
+            addressSpace:
+              - "10.0.0.0/16"
+            resourceGroupNameSelector:
+              matchControllerRef: true
+    # Subnet
+    - name: subnet
+      base:
+        apiVersion: network.azure.upbound.io/v1beta2
+        kind: Subnet
+        spec:
+          forProvider:
+            addressPrefixes:
+              - "10.0.1.0/24"
+            virtualNetworkNameSelector:
+              matchControllerRef: true
+            resourceGroupNameSelector:
+              matchControllerRef: true
+    # Network interface
+    - name: networkinterface
+      base:
+        apiVersion: network.azure.upbound.io/v1beta1
+        kind: NetworkInterface
+        spec:
+          forProvider:
+            location: westeurope
+            resourceGroupNameSelector:
+              matchControllerRef: true
+            ipConfiguration:
+              - name: internal
+                privateIPAddressAllocation: Dynamic
+                subnetIdSelector:
+                  matchControllerRef: true
+    # Linux virtual machine
+    - name: linuxvm
+      base:
+        apiVersion: compute.azure.upbound.io/v1beta2
+        kind: LinuxVirtualMachine
+        spec:
+          forProvider:
+            location: westeurope
+            resourceGroupNameSelector:
+              matchControllerRef: true
+            size: Standard_B1s
+            adminUsername: adminuser
+            networkInterfaceIdsSelector:
+              matchControllerRef: true
+            osDisc:
+              caching: ReadWrite
+              storageAccountType: Standard_LRS # change to epehemeral?
+            adminSshKey:
+              - username: adminuser
+                publicKey: ${ssh-public-key}
+            sourceImageReference:
+              publisher: Canonical
+              offer: UbuntuServer
+              sku: "18.04-LTS"
+              version: latest
