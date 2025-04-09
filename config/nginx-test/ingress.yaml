@@ -1,0 +1,27 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: nginx-test-ingress
+  namespace: nginx-test
+  annotations:
+    kubernetes.io/ingress.class: "traefik"
+    traefik.ingress.kubernetes.io/router.entrypoints: "websecure"
+    traefik.ingress.kubernetes.io/router.tls: "true"
+    # External DNS annotation to automatically create DNS record
+    external-dns.alpha.kubernetes.io/hostname: "nginx-test.everythingascode.dev"
+spec:
+  rules:
+  - host: nginx-test.everythingascode.dev
+    http:
+      paths:
+      - path: /
+        pathType: Prefix
+        backend:
+          service:
+            name: nginx-test
+            port:
+              number: 80
+  tls:
+  - hosts:
+    - nginx-test.everythingascode.dev
+    secretName: nginx-test-tls
