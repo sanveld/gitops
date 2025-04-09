@@ -17,6 +17,8 @@ spec:
     - repoURL: https://github.com/sanveld/gitops.git
       targetRevision: HEAD
       ref: values
+    - repoURL: https://github.com/sanveld/gitops.git
+      targetRevision: HEAD
   destination:
     server: https://kubernetes.default.svc
     namespace: traefik
