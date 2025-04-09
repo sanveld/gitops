@@ -12,9 +12,9 @@ ssl:
   
 # Middleware for HTTPS redirection with exception for ACME challenges
 additionalArguments:
-  - "--entrypoints.web.http.redirections.entryPoint.to=websecure"
-  - "--entrypoints.web.http.redirections.entryPoint.scheme=https"
-  - "--entrypoints.web.http.redirections.entrypoint.permanent=true"
+  - "--entrypoints.web.http.middlewares=acme-middleware@kubernetescrd"
+  - "--entrypoints.web.http.middlewares.acme-middleware.redirectscheme.scheme=https"
+  - "--entrypoints.web.http.middlewares.acme-middleware.redirectscheme.permanent=true"
   - "--entrypoints.websecure.http.tls.certResolver=le"
   
 ports:
