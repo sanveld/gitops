@@ -1,6 +1,12 @@
 provider:
   name: cloudflare
 
+cloudflare:
+  secretName: cloudflare-api-token
+  apiTokenSecretRef:
+    name: cloudflare-api-token
+    key: CF_API_TOKEN
+
 source:
   - ingress
 

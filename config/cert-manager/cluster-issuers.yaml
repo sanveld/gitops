@@ -4,13 +4,10 @@ metadata:
   name: letsencrypt-prod
 spec:
   acme:
-    # The ACME server URL for production environment
     server: https://acme-v02.api.letsencrypt.org/directory
 
-    # Email address used for ACME registration
-    email: sjveldhuizen@gmail.com # Replace with your actual email
+    email: sjveldhuizen@gmail.com
 
-    # Name of a secret used to store the ACME account private key
     privateKeySecretRef:
       name: letsencrypt-prod
 
