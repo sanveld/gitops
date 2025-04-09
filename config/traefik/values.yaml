@@ -6,6 +6,16 @@ providers:
   kubernetesCRD:
     enabled: true
 
+# Enable TLS support
+ssl:
+  enabled: true
+  
+# Middleware for HTTPS redirection
+additionalArguments:
+  - "--entrypoints.web.http.redirections.entryPoint.to=websecure"
+  - "--entrypoints.web.http.redirections.entryPoint.scheme=https"
+  - "--entrypoints.web.http.redirections.entrypoint.permanent=true"
+
 # Resource limits
 resources:
   requests:

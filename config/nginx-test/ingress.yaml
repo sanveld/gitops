@@ -9,6 +9,8 @@ metadata:
     traefik.ingress.kubernetes.io/router.tls: "true"
     # External DNS annotation to automatically create DNS record
     external-dns.alpha.kubernetes.io/hostname: "nginx-test.everythingascode.dev"
+    # Cert Manager annotations for automatic SSL certificate
+    cert-manager.io/cluster-issuer: "letsencrypt-prod"
 spec:
   rules:
   - host: nginx-test.everythingascode.dev
