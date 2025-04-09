@@ -18,8 +18,6 @@ spec:
     - repoURL: https://github.com/sanveld/gitops.git
       path: config/crossplane
       targetRevision: HEAD
-      directory:
-        include: "secretproviderclass.yaml"
   destination:
     server: https://kubernetes.default.svc
     namespace: crossplane-system
