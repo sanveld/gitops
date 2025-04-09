@@ -17,6 +17,8 @@ spec:
     - repoURL: https://github.com/sanveld/gitops.git
       ref: values
       targetRevision: HEAD
+    - repoURL: https://github.com/sanveld/gitops.git
+      path: config/cert-manager
   destination:
     server: https://kubernetes.default.svc
     namespace: cert-manager
