@@ -1,51 +1,30 @@
 provider: cloudflare
 
-cloudflare:
-  apiToken: ${CF_API_TOKEN}
-  secretName: cloudflare-api-token
-
-# Specify domain filter to limit to your domain
+# Domain filter to limit to your domain
 domainFilters:
   - everythingascode.dev
 
-extraEnvVars:
+# Configure environment variables for Cloudflare authentication using CSI secrets
+env:
   - name: CF_API_TOKEN
     valueFrom:
       secretKeyRef:
-        # Must match spec.secretObjects.secretName in SecretProviderClass
-        name: external-dns-cloudflare-secret
-        # Must match spec.secretObjects.data.key in SecretProviderClass
+        name: cloudflare-api-token
         key: CF_API_TOKEN
 
-txtOwnerId: "aks-cluster"
-policy: sync
-registry: txt
-interval: "1m"
+# Basic configuration
 sources:
   - service
   - ingress
+policy: sync
+registry: txt
+txtOwnerId: "aks-cluster"
+interval: "1m"
 
-txtPrefix: "external-dns-"
-
+# RBAC configuration
 rbac:
   create: true
 
 serviceAccount:
   create: true
   name: external-dns
-
-podSecurityContext:
-  fsGroup: 65534
-
-securityContext:
-  readOnlyRootFilesystem: true
-  runAsNonRoot: true
-  runAsUser: 65534
-
-resources:
-  limits:
-    cpu: 100m
-    memory: 128Mi
-  requests:
-    cpu: 50m
-    memory: 64Mi
