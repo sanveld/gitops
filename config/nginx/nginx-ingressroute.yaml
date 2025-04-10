@@ -1,4 +1,4 @@
-apiVersion: traefik.containo.us/v1alpha1 # Or traefik.io/v1alpha1 depending on Traefik version
+apiVersion: traefik.io/v1alpha1 # Or traefik.io/v1alpha1 depending on Traefik version
 kind: IngressRoute
 metadata:
   name: nginx-test-ingressroute
