@@ -4,7 +4,7 @@ metadata:
   name: default-tls-options
   namespace: nginx-test
 spec:
-  minVersion: VersionTLS12
+  minVersion: VersionTLS13
   cipherSuites:
     # TLS 1.3
     - TLS_AES_128_GCM_SHA256
