@@ -1,0 +1,16 @@
+apiVersion: traefik.io/v1alpha1 # Or traefik.io/v1alpha1 depending on Traefik version
+kind: IngressRoute
+metadata:
+  name: cloud-builder-canvas-ingressroute
+  namespace: cloud-builder-canvas
+spec:
+  entryPoints:
+    - websecure # Your HTTPS entrypoint defined in Traefik's config (usually port 443)
+  routes:
+  - match: Host(`platform.everythingascode.dev`) # !!! REPLACE with your desired subdomain !!!
+    kind: Rule
+    services:
+    - name: cloud-builder-canvas-service # Name of the Service created in Step 2
+      port: 80                 # Port defined in the Service
+  tls:
+    secretName: cloud-builder-canvas-tls # !!! MUST match secretName in the Certificate resource !!!

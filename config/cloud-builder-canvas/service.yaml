@@ -1,0 +1,15 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: cloud-builder-canvas-service
+  namespace: cloud-builder-canvas
+  labels:
+    app: cloud-builder-canvas
+spec:
+  type: ClusterIP # Only needs to be reachable within the cluster by Traefik
+  selector:
+    app: cloud-builder-canvas # Selects pods from the deployment above
+  ports:
+  - protocol: TCP
+    port: 80       # Port the service listens on
+    targetPort: 80 # Port the nginx container listens on

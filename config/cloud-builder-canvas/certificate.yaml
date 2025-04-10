@@ -1,0 +1,12 @@
+apiVersion: cert-manager.io/v1
+kind: Certificate
+metadata:
+  name: cloud-builder-canvas-certificate
+  namespace: cloud-builder-canvas
+spec:
+  secretName: cloud-builder-canvas-tls # The name of the K8s Secret Cert-Manager will create/update
+  issuerRef:
+    name: letsencrypt-prod # !!! REPLACE with your actual issuer name !!!
+    kind: ClusterIssuer # Use ClusterIssuer if it's defined cluster-wide
+  dnsNames:
+  - platform.everythingascode.dev # !!! REPLACE with your desired subdomain !!!
