@@ -1,0 +1,29 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: nginx-react-config
+  namespace: nginx-test
+data:
+  default.conf: |
+    server {
+      listen 80;
+      server_name _;
+      root /usr/share/nginx/html;
+      index index.html;
+      
+      # Force all paths to load either itself or index.html
+      location / {
+        try_files $uri $uri/ /index.html;
+      }
+      
+      # Enable compression for improved performance
+      gzip on;
+      gzip_types text/css application/javascript application/json;
+      gzip_min_length 1000;
+      
+      # Cache static assets
+      location ~* \.(js|css|png|jpg|jpeg|gif|ico)$ {
+        expires 1y;
+        add_header Cache-Control "public, max-age=31536000";
+      }
+    }
