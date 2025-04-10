@@ -7,22 +7,13 @@ metadata:
     - resources-finalizer.argocd.argoproj.io
 spec:
   project: default
-  sources:
-    - repoURL: https://kubernetes-sigs.github.io/external-dns/
-      chart: external-dns
-      targetRevision: 1.16.0
-      helm:
-        valueFiles:
-          - $values/config/external-dns/values.yaml
-    - repoURL: https://github.com/sanveld/gitops.git
-      ref: values
-      targetRevision: HEAD
+  source:
+    repoURL: https://github.com/sanveld/gitops.git
+    targetRevision: HEAD
+    path: config/external-dns
   destination:
     server: https://kubernetes.default.svc
     namespace: external-dns
-  helm:
-    valueFiles:
-      - values.yaml
   syncPolicy:
     automated:
       prune: true

@@ -1,7 +1,7 @@
 apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
-  name: backstage
+  name: bootstrap
   namespace: argocd
   finalizers:
     - resources-finalizer.argocd.argoproj.io
@@ -9,21 +9,20 @@ spec:
   project: default
   source:
     repoURL: https://github.com/sanveld/gitops.git
-    targetRevision: main
-    helm:
-      valueFiles:
-        - ../apps/backstage/values.yaml
-      parameters:
-        - name: image.tag
-          value: latest
-        - name: ingress.host
-          value: platform.everythingascode.dev
+    targetRevision: HEAD
+    path: apps
+    directory:
+      recurse: true
   destination:
     server: https://kubernetes.default.svc
-    namespace: backstage
+    namespace: argocd
   syncPolicy:
     automated:
       prune: true
       selfHeal: true
     syncOptions:
       - CreateNamespace=true
+      - PruneLast=true
+  info:
+    - name: Description
+      value: "Bootstrap application that installs all apps defined in the apps directory"

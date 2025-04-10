@@ -1,0 +1,64 @@
+argo-cd:
+  server:
+    extraArgs:
+      - --insecure
+    config:
+      repositories: |
+        - type: git
+          url: https://github.com/sanveld/gitops.git
+          name: gitops
+    ingress:
+      enabled: false
+    service:
+      type: LoadBalancer
+  
+  # Manage RBAC resources
+  rbac:
+    policy.default: role:readonly
+    policy.csv: |
+      g, admin, role:admin
+      
+  # Configure initial admin password (This will be stored in a K8s secret)
+  configs:
+    secret:
+      argocdServerAdminPassword: "$2a$10$hDj12Tw9xVmvybSahN1Y0.f9DZixxN8oybyA32Uy/eqWklFU4Mo8O"  # Default password: argocd
+  
+  # Configure the Redis component
+  redis:
+    resources:
+      limits:
+        memory: 128Mi
+      requests:
+        memory: 64Mi
+        cpu: 50m
+  
+  # Configure the controller component
+  controller:
+    resources:
+      limits:
+        memory: 512Mi
+      requests:
+        memory: 256Mi
+        cpu: 100m
+  
+  # Configure the repo server component
+  repoServer:
+    resources:
+      limits:
+        memory: 512Mi
+      requests:
+        memory: 256Mi
+        cpu: 100m
+  
+  # Configure the application controller component
+  applicationSet:
+    resources:
+      limits:
+        memory: 512Mi
+      requests:
+        memory: 256Mi
+        cpu: 100m
+
+  # OIDC configuration can be added here if needed
+  # dex:
+  #   enabled: true

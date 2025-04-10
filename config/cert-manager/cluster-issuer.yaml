@@ -5,9 +5,7 @@ metadata:
 spec:
   acme:
     server: https://acme-v02.api.letsencrypt.org/directory
-
     email: sjveldhuizen@gmail.com
-
     privateKeySecretRef:
       name: letsencrypt-prod
 
@@ -18,3 +16,6 @@ spec:
             apiTokenSecretRef:
               name: cloudflare-api-token
               key: api-token
+      # - http01:
+      #     ingress:
+      #       class: traefik

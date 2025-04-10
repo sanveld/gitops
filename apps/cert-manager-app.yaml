@@ -7,18 +7,10 @@ metadata:
     - resources-finalizer.argocd.argoproj.io
 spec:
   project: default
-  sources:
-    - repoURL: https://charts.jetstack.io
-      chart: cert-manager
-      targetRevision: v1.17.0
-      helm:
-        valueFiles:
-          - $values/config/cert-manager/values.yaml
-    - repoURL: https://github.com/sanveld/gitops.git
-      ref: values
-      targetRevision: HEAD
-    - repoURL: https://github.com/sanveld/gitops.git
-      path: config/cert-manager
+  source:
+    repoURL: https://github.com/sanveld/gitops.git
+    targetRevision: HEAD
+    path: config/cert-manager
   destination:
     server: https://kubernetes.default.svc
     namespace: cert-manager

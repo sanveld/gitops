@@ -19,8 +19,3 @@ resources:
   limits:
     cpu: "500m"
     memory: "512Mi"
-
-# Security context settings
-securityContext:
-  enabled: true
-  fsGroup: 1001

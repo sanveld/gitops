@@ -1,6 +1,12 @@
 service:
+  enabled: true
   type: LoadBalancer
 
 providers:
+  kubernetesCRD:
+    enabled: true
+    allowCrossNamespace: true
+    allowExternalNameServices: true
+
   kubernetesIngress:
-    ingressClass: traefik
+    enabled: true

@@ -1,0 +1,10 @@
+apiVersion: v2
+name: traefik
+description: A Traefik Helm chart wrapper for GitOps management
+type: application
+version: 0.1.0
+appVersion: "2.10.4"
+dependencies:
+  - name: traefik
+    version: 35.0.0
+    repository: https://helm.traefik.io/traefik
