@@ -1,5 +1,22 @@
 installCRDs: false
 
+# Configure webhooks to match actual cluster configuration
+webhook:
+  namespaceSelector:
+    matchExpressions:
+      - key: cert-manager.io/disable-validation
+        operator: NotIn
+        values:
+          - "true"
+      - key: control-plane
+        operator: NotIn
+        values:
+          - "true"
+      - key: kubernetes.azure.com/managedby
+        operator: NotIn
+        values:
+          - aks
+
 cainjector:
   enabled: true
   affinity:
