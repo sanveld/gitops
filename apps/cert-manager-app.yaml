@@ -15,6 +15,30 @@ spec:
     server: https://kubernetes.default.svc
     namespace: cert-manager
 
+
+  # --- ADD OR MODIFY THIS SECTION ---
+  ignoreDifferences:
+  # Ignore drift in the namespaceSelector for the Validating Webhook
+  - group: admissionregistration.k8s.io
+    kind: ValidatingWebhookConfiguration
+    # Double-check this name is correct in your cluster:
+    # kubectl get validatingwebhookconfiguration
+    name: cert-manager-webhook
+    # Ignore changes specifically within matchExpressions for more precision,
+    # or ignore the whole namespaceSelector if other parts also drift.
+    # Using the whole selector is often simpler if the core issue is external management.
+    jsonPointers:
+    - /webhooks/0/namespaceSelector # Adjust webhook index [0] if needed, usually 0
+
+  # Ignore drift in the namespaceSelector for the Mutating Webhook
+  - group: admissionregistration.k8s.io
+    kind: MutatingWebhookConfiguration
+    # Double-check this name is correct in your cluster:
+    # kubectl get mutatingwebhookconfiguration
+    name: cert-manager-webhook
+    jsonPointers:
+    - /webhooks/0/namespaceSelector # Adjust webhook index [0] if needed, usually 0
+
   syncPolicy:
     automated:
       prune: true
