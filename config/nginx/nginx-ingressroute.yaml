@@ -14,5 +14,5 @@ spec:
       port: 80                 # Port defined in the Service
   tls:
     secretName: nginx-test-tls # !!! MUST match secretName in the Certificate resource !!!
-    options:
-      name: default
+    domains:
+      - main: nginx-test.everythingascode.dev
