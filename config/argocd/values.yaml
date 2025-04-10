@@ -18,11 +18,6 @@ argo-cd:
     policy.csv: |
       g, admin, role:admin
       
-  # Configure initial admin password (This will be stored in a K8s secret)
-  configs:
-    secret:
-      argocdServerAdminPassword: "$2a$10$hDj12Tw9xVmvybSahN1Y0.f9DZixxN8oybyA32Uy/eqWklFU4Mo8O"  # Default password: argocd
-  
   # Configure the Redis component
   redis:
     resources:

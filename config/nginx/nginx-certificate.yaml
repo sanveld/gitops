@@ -1,0 +1,18 @@
+apiVersion: cert-manager.io/v1
+kind: Certificate
+metadata:
+  name: nginx-test-certificate
+  namespace: nginx-test
+spec:
+  # --- IMPORTANT ---
+  secretName: nginx-test-tls # The name of the K8s Secret Cert-Manager will create/update
+  # --- CHOOSE YOUR ISSUER ---
+  issuerRef:
+    # Replace with the name of your *production* ClusterIssuer (after testing staging)
+    # Examples: letsencrypt-prod (for HTTP-01) or letsencrypt-prod-dns (for DNS-01)
+    name: letsencrypt-prod # !!! REPLACE with your actual issuer name !!!
+    kind: ClusterIssuer # Use ClusterIssuer if it's defined cluster-wide
+    # group: cert-manager.io # Optional, usually inferred
+  # --- Define the domain ---
+  dnsNames:
+  - nginx-test.everythingascode.dev # !!! REPLACE with your desired subdomain !!!
