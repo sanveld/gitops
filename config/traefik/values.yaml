@@ -7,6 +7,8 @@ providers:
     enabled: true
     allowCrossNamespace: true
     allowExternalNameServices: true
+    ingressClass: traefik-external
+    namespaces: []  # Empty array means all namespaces
 
   kubernetesIngress:
     enabled: true
