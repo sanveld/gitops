@@ -2,15 +2,51 @@ installCRDs: true
 
 cainjector:
   enabled: true
+  affinity:
+    nodeAffinity:
+      requiredDuringSchedulingIgnoredDuringExecution:
+        nodeSelectorTerms:
+        - matchExpressions:
+          - key: kubernetes.io/os
+            operator: In
+            values:
+            - linux
+          - key: type
+            operator: In
+            values:
+            - virtual-machine
 
 startupapicheck:
   enabled: true
   timeout: 5m
+  affinity:
+    nodeAffinity:
+      requiredDuringSchedulingIgnoredDuringExecution:
+        nodeSelectorTerms:
+        - matchExpressions:
+          - key: kubernetes.io/os
+            operator: In
+            values:
+            - linux
+          - key: type
+            operator: In
+            values:
+            - virtual-machine
 
-# Configure webhook for single-node AKS cluster
-webhook:
-  # Disable node affinity for single-node clusters
-  affinity: {}
+# Global affinity for cert-manager controller
+affinity:
+  nodeAffinity:
+    requiredDuringSchedulingIgnoredDuringExecution:
+      nodeSelectorTerms:
+      - matchExpressions:
+        - key: kubernetes.io/os
+          operator: In
+          values:
+          - linux
+        - key: type
+          operator: In
+          values:
+          - virtual-machine
 
 resources:
   requests:
