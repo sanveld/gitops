@@ -15,43 +15,23 @@ spec:
       labels:
         app: nginx-test
     spec:
-      initContainers:
-      - name: git-clone-build
-        image: node:18-alpine
-        command: ["/bin/sh", "-c"]
-        args:
-          - |
-            # Install git
-            apk add --no-cache git && \
-            # Clone the repository
-            git clone https://github.com/sanveld/cloud-builder-canvas.git /app && \
-            # Navigate to project directory
-            cd /app && \
-            # Install dependencies
-            npm ci && \
-            # Build the project
-            npm run build && \
-            # Copy build files to the shared volume
-            cp -r build/* /usr/share/nginx/html/
-        volumeMounts:
-        - name: build-output
-          mountPath: /usr/share/nginx/html
       containers:
       - name: nginx
         image: nginx:1.25.3 # Using a specific version for stability
         ports:
         - containerPort: 80
         volumeMounts:
-        - name: build-output
-          mountPath: /usr/share/nginx/html
         - name: nginx-config
           mountPath: /etc/nginx/conf.d
+        - name: welcome-content
+          mountPath: /usr/share/nginx/html
       volumes:
-      - name: build-output
-        emptyDir: {}
       - name: nginx-config
         configMap:
           name: nginx-react-config
+      - name: welcome-content
+        configMap:
+          name: nginx-welcome-page
 ---
 apiVersion: v1
 kind: Service
