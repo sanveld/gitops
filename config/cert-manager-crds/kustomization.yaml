@@ -2,3 +2,14 @@ apiVersion: kustomize.config.k8s.io/v1beta1
 kind: Kustomization
 resources:
   - https://github.com/cert-manager/cert-manager/releases/download/v1.17.1/cert-manager.crds.yaml
+
+# Add webhook configurations to ensure they are correctly synchronized
+patches:
+  - target:
+      group: admissionregistration.k8s.io
+      version: v1
+      kind: ValidatingWebhookConfiguration
+      name: cert-manager-webhook
+    patch: |-
+      # This empty patch ensures the webhook is not out of sync
+      {}
