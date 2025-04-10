@@ -16,6 +16,3 @@ spec:
     secretName: nginx-test-tls # !!! MUST match secretName in the Certificate resource !!!
     # domains:
     #   - main: nginx-test.everythingascode.dev
-    options:
-      name: default-tls-options # Name of the TLSOption resource created in Step 3
-      namespace: nginx-test     # Namespace where the TLSOption is located
