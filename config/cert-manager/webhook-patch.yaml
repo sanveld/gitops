@@ -1,0 +1,20 @@
+apiVersion: admissionregistration.k8s.io/v1
+kind: ValidatingWebhookConfiguration
+metadata:
+  name: cert-manager-webhook
+webhooks:
+- name: webhook.cert-manager.io
+  namespaceSelector:
+    matchExpressions:
+    - key: cert-manager.io/disable-validation
+      operator: NotIn
+      values:
+      - "true"
+    - key: control-plane
+      operator: NotIn
+      values:
+      - "true"
+    - key: kubernetes.azure.com/managedby
+      operator: NotIn
+      values:
+      - aks
