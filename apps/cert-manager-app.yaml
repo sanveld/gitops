@@ -14,18 +14,7 @@ spec:
   destination:
     server: https://kubernetes.default.svc
     namespace: cert-manager
-ignoreDifferences:
-# Ignore the specific namespaceSelector fields within the webhook configurations
-- group: admissionregistration.k8s.io
-  kind: ValidatingWebhookConfiguration
-  name: cert-manager-webhook # Check the exact name if different
-  jsonPointers:
-  - /webhooks/0/namespaceSelector/matchExpressions # Adjust index if needed
-- group: admissionregistration.k8s.io
-  kind: MutatingWebhookConfiguration
-  name: cert-manager-webhook # Check the exact name if different
-  jsonPointers:
-  - /webhooks/0/namespaceSelector/matchExpressions # Adjust index if needed
+
   syncPolicy:
     automated:
       prune: true

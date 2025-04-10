@@ -1,6 +1,5 @@
-installCRDs: false
+installCRDs: true
 
-# Configure webhooks to match actual cluster configuration
 webhook:
   namespaceSelector:
     matchExpressions:
@@ -8,59 +7,3 @@ webhook:
         operator: NotIn
         values:
           - "true"
-
-cainjector:
-  enabled: true
-  affinity:
-    nodeAffinity:
-      requiredDuringSchedulingIgnoredDuringExecution:
-        nodeSelectorTerms:
-        - matchExpressions:
-          - key: kubernetes.io/os
-            operator: In
-            values:
-            - linux
-          - key: type
-            operator: In
-            values:
-            - virtual-machine
-
-startupapicheck:
-  enabled: true
-  timeout: 5m
-  affinity:
-    nodeAffinity:
-      requiredDuringSchedulingIgnoredDuringExecution:
-        nodeSelectorTerms:
-        - matchExpressions:
-          - key: kubernetes.io/os
-            operator: In
-            values:
-            - linux
-          - key: type
-            operator: In
-            values:
-            - virtual-machine
-
-# Global affinity for cert-manager controller
-affinity:
-  nodeAffinity:
-    requiredDuringSchedulingIgnoredDuringExecution:
-      nodeSelectorTerms:
-      - matchExpressions:
-        - key: kubernetes.io/os
-          operator: In
-          values:
-          - linux
-        - key: type
-          operator: In
-          values:
-          - virtual-machine
-
-resources:
-  requests:
-    cpu: "100m"
-    memory: "150Mi"
-  limits:
-    cpu: "500m"
-    memory: "512Mi"
