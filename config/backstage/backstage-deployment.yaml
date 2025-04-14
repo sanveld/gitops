@@ -13,9 +13,10 @@ spec:
       labels:
         app: backstage
     spec:
+      serviceAccountName: backstage-service-account
       containers:
         - name: backstage
-          image: ghcr.io/sanveld/backstage-k8s-backend:latest
+          image: ghcr.io/sanveld/devplatform-backstage:latest
           imagePullPolicy: IfNotPresent
           ports:
             - name: http
@@ -23,3 +24,10 @@ spec:
           envFrom:
             - secretRef:
                 name: postgres-secrets
+            - secretRef:
+                name: backstage-secrets
+          env:
+          - name: POSTGRES_PORT
+            value: "5432"
+          - name: POSTGRES_HOST
+            value: "postgres.backstage.svc.cluster.local"
