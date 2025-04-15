@@ -13,7 +13,6 @@ spec:
       labels:
         app: backstage
     spec:
-      serviceAccountName: backstage-service-account
       containers:
         - name: backstage
           image: ghcr.io/sanveld/devplatform-backstage-backend:latest
@@ -23,15 +22,11 @@ spec:
               containerPort: 7007
           envFrom:
             - secretRef:
-                name: postgres-secrets-az
+                name: postgres-secrets
             - secretRef:
                 name: backstage-secrets-az
           env:
           - name: POSTGRES_PORT
             value: "5432"
-          # - name: POSTGRES_HOST
-          #   value: "postgres.backstage.svc.cluster.local"
           - name: POSTGRES_HOST
-            value: "backstage-postgres-devplatform0.postgres.database.azure.com"
-
-## for local PG, change postgres host, secret refs
+            value: "postgres-db-cluster-rw.postgres-apps.svc.cluster.local"

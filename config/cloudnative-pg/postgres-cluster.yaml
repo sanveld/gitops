@@ -1,0 +1,61 @@
+# postgres-cluster.yaml
+apiVersion: postgresql.cnpg.io/v1
+kind: Cluster
+metadata:
+  name: postgres-db-cluster # Name of your PostgreSQL cluster resource
+  namespace: postgres-apps # Namespace where the cluster will live
+spec:
+  # Number of PostgreSQL instances (pods)
+  # 3 is recommended for High Availability (1 primary, 2 replicas)
+  instances: 3
+
+  # PostgreSQL version (check CloudNativePG docs for supported versions)
+  # imageName: ghcr.io/cloudnative-pg/postgresql:16.0 # Example for PG16
+  # Omit imageName to use the default version specified by the operator version
+
+  # Define primary update strategy: automated or supervised
+  primaryUpdateStrategy: unsupervised # Or 'supervised' for manual switchover control
+
+  # Storage configuration
+  storage:
+    size: "5Gi" # Adjust size as needed
+    # Specify a StorageClass. Use one available in your AKS cluster.
+    # Check available StorageClasses with: kubectl get storageclass
+    # Common AKS options: default (often maps to Standard SSD), managed-premium (Premium SSD)
+    # Ensure the chosen StorageClass supports volume expansion if you plan to resize later.
+    storageClass: "default" # Example: Use Premium SSD
+
+  # Optional: Monitoring configuration (requires Prometheus Operator)
+  # monitoring:
+  #   enablePodMonitor: true
+
+  # Optional: Backup configuration (requires setting up object storage like Azure Blob Storage)
+  # backup:
+  #   barmanObjectStore:
+  #     destinationPath: "s3://your-bucket-name/path/to/backups/" # Example S3 path format
+  #     endpointURL: "https://<your_storage_account>.blob.core.windows.net" # Azure Blob endpoint
+  #     # S3 credentials need to be stored in a secret and referenced here
+  #     # See CloudNativePG documentation for Azure Blob Storage setup
+  #     s3Credentials:
+  #       accessKeyId:
+  #         name: azure-blob-creds # Name of the secret
+  #         key: AZURE_ACCESS_KEY_ID # Key within the secret
+  #       secretAccessKey:
+  #         name: azure-blob-creds
+  #         key: AZURE_SECRET_ACCESS_KEY
+  #   retentionPolicy: "30d" # Keep backups for 30 days
+
+# ---
+# Example Secret for Azure Blob Storage Credentials (if using backup)
+# Create this secret *before* applying the Cluster manifest if backup is configured
+# apiVersion: v1
+# kind: Secret
+# metadata:
+#   name: azure-blob-creds
+#   namespace: postgres-apps # Same namespace as the cluster
+# type: Opaque
+# stringData:
+#   # Use the Storage Account Name for Access Key ID
+#   AZURE_ACCESS_KEY_ID: "<YOUR_AZURE_STORAGE_ACCOUNT_NAME>"
+#   # Use one of the Storage Account Access Keys for Secret Access Key
+#   AZURE_SECRET_ACCESS_KEY: "<YOUR_AZURE_STORAGE_ACCOUNT_ACCESS_KEY>"
