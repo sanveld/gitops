@@ -1,0 +1,17 @@
+# claim-developer-db.yaml
+apiVersion: database.example.org/v1alpha1 # Your custom API group
+kind: PostgreSQLInstance # The Claim kind
+metadata:
+  name: my-app-db
+  namespace: my-application # Developer's namespace
+spec:
+  # Reference the Composition (can use selectors too)
+  compositionRef:
+    name: azure-postgres-basic
+  # Provide the parameters defined in the XRD
+  parameters:
+    storageGB: 10
+    version: "11"
+  # Define where the developer wants the connection secret
+  writeConnectionSecretToRef:
+    name: my-app-db-conn # Secret will appear in 'my-application' namespace

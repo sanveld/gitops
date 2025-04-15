@@ -1,0 +1,20 @@
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: postgres-storage-claim # Keep the same name if you like
+  namespace: backstage
+spec:
+  # --- Use a StorageClass provided by AKS ---
+  # Find available classes: kubectl get storageclass
+  # Common options:
+  # - managed-csi (Standard SSD - good default)
+  # - managed-csi-premium (Premium SSD - faster)
+  # - default (often maps to managed-csi)
+  # - azurefile-csi (uses Azure Files)
+  # Omit storageClassName to use the default marked one, or specify explicitly:
+  storageClassName: managed-csi # Or choose another like managed-csi-premium
+  accessModes:
+    - ReadWriteOnce # Suitable for Azure Disk and single Postgres replica
+  resources:
+    requests:
+      storage: 2Gi # Request 2 Gigabytes (adjust as needed)

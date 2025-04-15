@@ -8,9 +8,19 @@ argo-cd:
           url: https://github.com/sanveld/gitops.git
           name: gitops
     ingress:
-      enabled: false
+      enabled: true
+      ingressClassName: nginx
+      annotations:
+        kubernetes.io/tls-acme: "true"
+        cert-manager.io/cluster-issuer: "letsencrypt-prod"
+      hosts:
+        - argo.everythingascode.dev
+      tls:
+        - secretName: argocd-server-tls
+          hosts:
+            - argo.everythingascode.dev
     service:
-      type: LoadBalancer
+      type: ClusterIP
   
   # Manage RBAC resources
   rbac:

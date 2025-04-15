@@ -1,0 +1,85 @@
+# composition-azure-postgres.yaml
+apiVersion: apiextensions.crossplane.io/v1
+kind: Composition
+metadata:
+  name: azure-postgres-basic
+  labels:
+    provider: azure
+    db: postgresql
+spec:
+  # Target the XRD we created
+  compositeTypeRef:
+    apiVersion: database.example.org/v1alpha1
+    kind: XPostgreSQLInstance
+  # Define how to provision Azure resources
+  resources:
+    # 1. Resource Group (Example: Create dynamically)
+    - name: resourcegroup
+      base:
+        apiVersion: azure.upbound.io/v1beta1
+        kind: ResourceGroup
+        spec:
+          forProvider:
+            location: "Sweden Central" # Or patch from claim/XR
+      patches:
+        # Example: Set RG name based on XR name
+        - fromFieldPath: metadata.name
+          toFieldPath: metadata.name
+          transforms:
+            - type: string
+              string:
+                fmt: "%s-rg"
+
+    # 2. PostgreSQL Server
+    - name: postgresqlserver
+      base:
+        apiVersion: dbforpostgresql.azure.upbound.io/v1beta1
+        kind: Server
+        spec:
+          forProvider:
+            location: "Sweden Central" # Or patch from claim/XR
+            resourceGroupNameSelector: # Reference the RG created above
+              matchControllerRef: true
+            skuName: GP_Gen5_2 # Example SKU - make configurable later
+            sslEnforcementEnabled: true
+            storageMb: 5120 # Default, will be patched
+            version: "11" # Default, will be patched
+            administratorLogin: postgresadmin # Consider parameterizing/generating
+            administratorLoginPasswordSecretRef: # Generate password
+              namespace: upbound-system # Or where Crossplane runs
+              name: db-admin-password
+              key: password
+          # Write connection details for Crossplane to use
+          writeConnectionSecretToRef:
+            namespace: upbound-system # Or where Crossplane runs
+            name: db-conn-details
+      patches:
+        # Patch storage size (convert GB to MB)
+        - fromFieldPath: spec.parameters.storageGB
+          toFieldPath: spec.forProvider.storageMb
+          transforms:
+            - type: math
+              math:
+                multiply: 1024
+        # Patch version
+        - fromFieldPath: spec.parameters.version
+          toFieldPath: spec.forProvider.version
+        # Patch RG name reference explicitly if not using selector
+        # - fromFieldPath: status.atProvider.resourceGroupName
+        #   toFieldPath: spec.forProvider.resourceGroupName
+        #   policy:
+        #     fromFieldPath: Required # Use if name comes from status of RG
+        # Patch Server name based on XR name
+        - fromFieldPath: metadata.name
+          toFieldPath: metadata.name
+          transforms:
+            - type: string
+              string:
+                fmt: "%s-psql"
+
+      # Define how to populate the developer-facing connection secret
+      connectionDetails:
+        - fromConnectionSecretKey: username
+        - fromConnectionSecretKey: password
+        - fromConnectionSecretKey: endpoint
+        - fromConnectionSecretKey: port

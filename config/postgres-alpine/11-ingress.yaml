@@ -1,0 +1,33 @@
+# backstage-ingress.yaml
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: backstage-ingress
+  namespace: backstage
+  annotations:
+    # Tell cert-manager to use the staging issuer (CHANGE TO letsencrypt-prod later)
+    cert-manager.io/cluster-issuer: letsencrypt-prod
+    # Optional: Force redirect HTTP to HTTPS via Nginx Ingress
+    nginx.ingress.kubernetes.io/force-ssl-redirect: "true"
+    # Optional: Enable HSTS via Nginx Ingress (only after everything works)
+    # nginx.ingress.kubernetes.io/hsts: "true"
+    # nginx.ingress.kubernetes.io/hsts-max-age: "31536000" # 1 year
+    # nginx.ingress.kubernetes.io/hsts-include-subdomains: "true"
+    # nginx.ingress.kubernetes.io/hsts-preload: "true"
+spec:
+  ingressClassName: nginx # Matches the class used by the Nginx Ingress Controller
+  tls:
+  - hosts:
+    - backstage.everythingascode.dev # Your domain
+    secretName: backstage-tls-secret # cert-manager will create this secret with the certificate
+  rules:
+  - host: backstage.everythingascode.dev # Your domain
+    http:
+      paths:
+      - path: / # Route all paths
+        pathType: Prefix
+        backend:
+          service:
+            name: backstage # The name of your Backstage ClusterIP service
+            port:
+              name: http # The 'name' of the port in your Backstage service (e.g., 'http' which maps to port 80)

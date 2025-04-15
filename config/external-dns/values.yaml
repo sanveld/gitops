@@ -16,3 +16,4 @@ domainFilters:
 
 policy: sync
 
+txtOwnerId: "aks-cluster-externaldns-cf"
