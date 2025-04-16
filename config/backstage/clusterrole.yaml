@@ -1,0 +1,53 @@
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRole
+metadata:
+  name: backstage-read-only-clusterrole # You can choose a different name
+rules:
+  - apiGroups:
+      - '' # Core API group
+      - 'apps'
+      - 'autoscaling'
+      - 'networking.k8s.io'
+    resources:
+      - pods
+      - configmaps
+      - services
+      - deployments
+      - replicasets
+      - horizontalpodautoscalers
+      - ingresses
+      - statefulsets
+      - limitranges
+      - resourcequotas
+      - daemonsets
+    verbs:
+      - get
+      - list
+      - watch
+  - apiGroups:
+      - 'batch'
+    resources:
+      - jobs
+      - cronjobs
+    verbs:
+      - get
+      - list
+      - watch
+  - apiGroups:
+      - 'metrics.k8s.io'
+    resources:
+      - pods
+    verbs:
+      - get
+      - list
+# Add any custom resource groups/resources Backstage needs to read here
+# Example:
+# - apiGroups:
+#     - 'argoproj.io'
+#   resources:
+#     - 'rollouts'
+#     - 'applications'
+#   verbs:
+#     - get
+#     - list
+#     - watch

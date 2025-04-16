@@ -13,6 +13,7 @@ spec:
       labels:
         app: backstage
     spec:
+      serviceAccountName: backstage-service-account
       containers:
         - name: backstage
           image: ghcr.io/sanveld/devplatform-backstage-backend:latest
@@ -33,10 +34,6 @@ spec:
             - name: POSTGRES_PORT
               value: '5432'
             - name: APP_BASE_URL
-              value: https://backstage.everythingascode.dev
-            - name: BACKEND_BASE_URL
-              value: https://backstage.everythingascode.dev
-            - name: CORS_ORIGIN_URL
               value: https://backstage.everythingascode.dev
 # Uncomment if health checks are enabled in your app:
 # https://backstage.io/docs/plugins/observability#health-checks
