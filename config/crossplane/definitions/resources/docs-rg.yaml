@@ -2,6 +2,8 @@ apiVersion: azure.upbound.io/v1beta1
 kind: ResourceGroup
 metadata:
   name: docs
+  labels:
+    crossplane.io/managed-by: crossplane
 spec:
   forProvider:
     location: "Sweden Central"
