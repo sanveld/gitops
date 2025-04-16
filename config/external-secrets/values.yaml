@@ -1,0 +1,3 @@
+azureWorkloadIdentity:
+  enabled: true
+installCRDs: true
