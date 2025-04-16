@@ -8,9 +8,26 @@ metadata:
 spec:
   project: default
   source:
-    repoURL: https://github.com/sanveld/gitops.git
-    targetRevision: HEAD
-    path: config/external-dns
+    chart: external-dns
+    repoURL: https://kubernetes-sigs.github.io/external-dns/
+    targetRevision: "1.16.1"
+
+    helm:
+      valuesObject:
+        provider:
+          name: cloudflare
+        env:
+          - name: CF_API_TOKEN
+            valueFrom:
+              secretKeyRef:
+                name: cloudflare-api-token
+                key: api-token
+        source:
+          - ingress
+        domainFilters:
+          - everythingascode.dev
+        policy: sync
+        txtOwnerId: "aks-cluster-externaldns-cf"
   destination:
     server: https://kubernetes.default.svc
     namespace: external-dns
