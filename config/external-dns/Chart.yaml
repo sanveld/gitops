@@ -3,8 +3,8 @@ name: external-dns
 description: A Helm chart wrapper for External DNS for GitOps management
 type: application
 version: 0.1.0
-appVersion: "0.14.0"
+appVersion: "0.16.1"
 dependencies:
   - name: external-dns
-    version: 1.16.0
+    version: 1.16.1
     repository: https://kubernetes-sigs.github.io/external-dns
