@@ -1,22 +1,20 @@
 apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
-  name: cert-manager-issuer
+  name: crossplane-providers
   namespace: argocd
   annotations:
-    argocd.argoproj.io/depends-on: cert-manager-crds
+    argocd.argoproj.io/depends-on: crossplane-providers
 spec:
   project: default
   source:
     repoURL: https://github.com/sanveld/gitops.git
+    path: config/crossplane/provider-configs
     targetRevision: HEAD
-    path: config/cert-manager-issuer
   destination:
     server: https://kubernetes.default.svc
-    namespace: cert-manager
+    namespace: crossplane-system
   syncPolicy:
     automated:
       prune: true
       selfHeal: true
-    syncOptions:
-      - CreateNamespace=true
