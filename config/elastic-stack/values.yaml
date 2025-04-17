@@ -29,8 +29,6 @@ kibanaIngress:
   annotations:
     cert-manager.io/cluster-issuer: letsencrypt-prod
     nginx.ingress.kubernetes.io/force-ssl-redirect: "true"
-    # If you need to handle proxy buffering
-    nginx.ingress.kubernetes.io/proxy-buffer-size: "128k"
   className: nginx
   host: kibana.everythingascode.dev
   tls:
