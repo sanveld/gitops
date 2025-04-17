@@ -1,0 +1,22 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: cert-manager-issuer
+  namespace: argocd
+  annotations:
+    argocd.argoproj.io/sync-wave: "1" # Negative sync wave ensures this runs before other apps
+spec:
+  project: default
+  source:
+    repoURL: https://github.com/sanveld/gitops.git
+    targetRevision: HEAD
+    path: config/cert-manager-issuer
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: cert-manager
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
+    syncOptions:
+      - CreateNamespace=true
