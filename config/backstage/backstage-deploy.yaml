@@ -3,6 +3,8 @@ kind: Deployment
 metadata:
   name: backstage
   namespace: backstage
+labels:
+  backstage.io/kuberentes-id: backstage-backend-app
 spec:
   replicas: 1
   selector:
@@ -12,6 +14,7 @@ spec:
     metadata:
       labels:
         app: backstage
+        backstage.io/kuberentes-id: backstage-backend-app
     spec:
       serviceAccountName: backstage-service-account
       containers:

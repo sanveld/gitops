@@ -1,0 +1,12 @@
+apiVersion: v2
+name: elastic-stack
+description: A Helm chart wrapper for Elastic Stack for GitOps management
+type: application
+version: 0.1.0
+appVersion: "latest"
+
+dependencies:
+- name: eck-operator
+  version: "3.0.0"
+  repository: "https://helm.elastic.co"
+  alias: elastic-operator

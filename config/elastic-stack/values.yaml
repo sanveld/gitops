@@ -1,0 +1,39 @@
+# Values file for Elastic Stack deployment with Kibana ingress setup
+
+# Create a Kibana instance for Elasticsearch GUI
+kibana:
+  spec:
+    version: 3.0.0
+    count: 1
+    elasticsearchRef:
+      name: elasticsearch  # Reference to your Elasticsearch cluster name
+    http:
+      tls:
+        selfSignedCertificate:
+          disabled: true  # Disable self-signed cert since we'll use Let's Encrypt
+    podTemplate:
+      spec:
+        containers:
+        - name: kibana
+          resources:
+            limits:
+              memory: 1Gi
+              cpu: 1
+            requests:
+              memory: 512Mi
+              cpu: 0.5
+
+# Create an Ingress resource for Kibana
+kibanaIngress:
+  enabled: true
+  annotations:
+    cert-manager.io/cluster-issuer: letsencrypt-prod
+    nginx.ingress.kubernetes.io/force-ssl-redirect: "true"
+    # If you need to handle proxy buffering
+    nginx.ingress.kubernetes.io/proxy-buffer-size: "128k"
+  className: nginx
+  host: kibana.everythingascode.dev
+  tls:
+    - hosts:
+        - kibana.everythingascode.dev
+      secretName: kibana-tls-secret
